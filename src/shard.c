@@ -114,7 +114,8 @@ uint32_t shard_get_next_ip(shard_t *shard)
 	while (1) {
 		uint32_t candidate = shard_get_next_elem(shard);
 		if (candidate == shard->params.last) {
-			return 0;
+			//return 0;
+			candidate = shard->params.first;
 		}
 		if (candidate - 1 < zsend.max_index) {
 			shard->state.whitelisted++;

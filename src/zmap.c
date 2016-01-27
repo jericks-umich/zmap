@@ -182,18 +182,18 @@ static void start_zmap(void)
 	recv_arg_t *recv_arg = xmalloc(sizeof(recv_arg_t));
 	recv_arg->cpu = zconf.pin_cores[cpu % zconf.pin_cores_len];
 	cpu += 1;
-	int r = pthread_create(&trecv, NULL, start_recv, recv_arg);
-	if (r != 0) {
-		log_fatal("zmap", "unable to create recv thread");
-	}
-	for (;;) {
-		pthread_mutex_lock(&recv_ready_mutex);
-		if (zconf.recv_ready) {
-			pthread_mutex_unlock(&recv_ready_mutex);
-			break;
-		}
-		pthread_mutex_unlock(&recv_ready_mutex);
-	}
+	//int r = pthread_create(&trecv, NULL, start_recv, recv_arg);
+	//if (r != 0) {
+	//	log_fatal("zmap", "unable to create recv thread");
+	//}
+	//for (;;) {
+	//	pthread_mutex_lock(&recv_ready_mutex);
+	//	if (zconf.recv_ready) {
+	//		pthread_mutex_unlock(&recv_ready_mutex);
+	//		break;
+	//	}
+	//	pthread_mutex_unlock(&recv_ready_mutex);
+	//}
 #ifdef PFRING
 	pfring_zc_worker *zw = pfring_zc_run_balancer(zconf.pf.queues,
 		&zconf.pf.send,
@@ -261,7 +261,7 @@ static void start_zmap(void)
 	pfring_zc_sync_queue(zconf.pf.send, tx_only);
 	log_debug("zmap", "send queue flushed");
 #endif
-	r = pthread_join(trecv, NULL);
+	int r = pthread_join(trecv, NULL);
 	if (r != 0) {
 		log_fatal("zmap", "unable to join recv thread");
 		exit(EXIT_FAILURE);

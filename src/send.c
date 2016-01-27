@@ -274,11 +274,11 @@ int send_run(sock_t st, shard_t *s)
 			s->cb(s->id, s->arg);
 			break;
 		}
-		if (s->state.sent >= max_targets) {
-			s->cb(s->id, s->arg);
-			log_debug("send", "send thread %hhu finished (max targets of %u reached)", s->id, max_targets);
-			break;
-		}
+		//if (s->state.sent >= max_targets) {
+		//	s->cb(s->id, s->arg);
+		//	log_debug("send", "send thread %hhu finished (max targets of %u reached)", s->id, max_targets);
+		//	break;
+		//}
 		if (zconf.max_runtime && zconf.max_runtime <= now() - zsend.start) {
 			s->cb(s->id, s->arg);
 			break;
